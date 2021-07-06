@@ -20,6 +20,7 @@ describe('index', () => {
     s3BucketPrefix: '',
     awsAccessKeyId: '',
     awsSecretAccessKey: '',
+    awsDefaultRegion: '',
     renewalInterval: 1000,
     logAll: true
   };
@@ -34,6 +35,7 @@ describe('index', () => {
     certConfig.domainName = process.env.CERT_DOMAIN!;
     certConfig.awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID!;
     certConfig.awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY!;
+    certConfig.awsDefaultRegion = process.env.AWS_DEFAULT_REGION!;
     certConfig.s3BucketName = process.env.S3_BUCKET_NAME!;
     certConfig.s3BucketPrefix = process.env.S3_BUCKET_PREFIX!;
   });

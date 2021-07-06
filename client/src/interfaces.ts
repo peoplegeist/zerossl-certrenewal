@@ -4,6 +4,7 @@ export interface CertConfigOptions {
   s3BucketPrefix: string,
   awsAccessKeyId: string,
   awsSecretAccessKey: string,
+  awsDefaultRegion: string,
   renewalInterval?: number,
   logAll?: boolean
 }

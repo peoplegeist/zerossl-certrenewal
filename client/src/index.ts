@@ -141,10 +141,13 @@ export class ZeroSSLCertrenewalClient {
       log.error('configuration for ZeroSSL renewal client not set');
       return;
     }
-    const s3 = new S3Client({ credentials: { 
-      accessKeyId: this.config.awsAccessKeyId,
-      secretAccessKey: this.config.awsSecretAccessKey
-    }});
+    const s3 = new S3Client({ 
+      region: this.config.awsDefaultRegion,
+      credentials: {
+        accessKeyId: this.config.awsAccessKeyId,
+        secretAccessKey: this.config.awsSecretAccessKey
+      }
+    });
 
     const command = new ListObjectsV2Command({
       Bucket: this.config.s3BucketName,

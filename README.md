@@ -134,6 +134,7 @@ const certConfig: CertConfigOptions = {
     s3BucketPrefix: s3 prefix to the cert or folder name,
     awsAccessKeyId: Role with S3 read access to the bucket,
     awsSecretAccessKey: '',
+    awsDefaultRegion: aws-region,
     renewalInterval?: in ms (default 7 days),
     logAll?: default false
 };
@@ -153,6 +154,7 @@ zerossl-certrenewal-client:
     s3BucketName: 'buildchain-assets.yourdomain.com',
     s3BucketPrefix: 'prod/certs',
     awsAccessKeyId: 'FDSFDSFDS',
-    awsSecretAccessKey: 'XFDSFDSFDSf'
+    awsSecretAccessKey: 'XFDSFDSFDSf',
+    awsDefaultRegion: 'eu-west-1'
   };
 ```
