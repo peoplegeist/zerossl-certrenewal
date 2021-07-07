@@ -24,8 +24,6 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v2
-        id: vars
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
         
       - name: Setup node env 🏗
         uses: actions/setup-node@v2
@@ -78,6 +76,8 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v2
+        
+      - name: Set tag
         id: vars
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
 
