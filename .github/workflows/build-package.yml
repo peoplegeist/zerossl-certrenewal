@@ -1,16 +1,17 @@
-name: test-package
+name: build-package
 
-on: 
+on:
+  release:
+    types: # This configuration does not affect the page_build event above
+      - created
   push:
-    branches:
-      - '**'
-    tags-ignore:
+    tags:
       - '*'
   workflow_dispatch:
 
 jobs:
-  test-client:
-    needs: test-bot
+  build-client:
+    needs: build-bot
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,7 +24,9 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v2
-
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+        
       - name: Setup node env 🏗
         uses: actions/setup-node@v2
         with:
@@ -55,8 +58,14 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           S3_BUCKET_NAME: buildtools-peoplegeist.com
           S3_BUCKET_PREFIX: test/certs
+
+      - name: Publish npm package NPM 📚
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        continue-on-error: true
   
-  test-bot:
+  build-bot:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -69,13 +78,27 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v2
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
 
-      - name: build bot
-        run: docker build -t zerossl-certrenewal-bot ./
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: peoplegeist/zerossl-certrenewal-bot:${{ steps.vars.outputs.tag }}
       
       - name: run bot
-        run: docker run -e ZEROSSL_EMAIL=admin@peoplegeist.com -e CERT_DOMAIN=test-api.peoplegeist.com -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} -e S3_BUCKET_URL=s3://buildtools-peoplegeist.com/test/certs zerossl-certrenewal-bot
-
-          
-
-        
+        run: docker run -e ZEROSSL_EMAIL=admin@peoplegeist.com -e CERT_DOMAIN=test-api.peoplegeist.com -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} -e S3_BUCKET_URL=s3://buildtools-peoplegeist.com/test/certs peoplegeist/zerossl-certrenewal-bot:${{ steps.vars.outputs.tag }}
