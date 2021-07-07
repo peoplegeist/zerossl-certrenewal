@@ -17,7 +17,7 @@ Part 1 - Renewal bot: 'zerossl-certrenewal-bot'
 - Uploads the new certs to S3 (if there is a new certificate)
 
 
-Part 2 - Check and install new cert: 'zerossl-certrenwal-client'
+Part 2 - Check and install new cert: 'zerossl-certrenewal-client'
 - Checks during bootup of node/http2 server if there is a new cert on S3
 - Periodically checks S3 for a new certs and installs it
 - If no S3 source is configured, a local cert can be supplied
