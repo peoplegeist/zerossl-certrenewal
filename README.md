@@ -6,9 +6,6 @@ It uses:
 - route53 for dns challenge
 - ECS task scheduler to schedule period cert renewal
 
-This is under development.
-
-I will tag it v1 once it works.
 
 # Overview
 Part 1 - Renewal bot: 'zerossl-certrenewal-bot'
