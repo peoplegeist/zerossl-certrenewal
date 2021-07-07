@@ -1,6 +1,6 @@
 {
-  "name": "zerossl-certrenwal-client",
-  "version": "0.0.1",
+  "name": "@peoplegeist/zerossl-certrenwal-client",
+  "version": "0.0.3",
   "description": "Issues, installs and automatically updates SSL/TLS certificates for node https/2 servers.",
   "main": "dist/exports.js",
   "types": "dist/exports.d.ts",
