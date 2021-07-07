@@ -70,6 +70,8 @@ Part 2 - Check and install new cert: 'zerossl-certrenewal-client'
 ```
 
 ## Run zerossl-certrenewal-bot
+docker run peoplegeist/zerossl-certrenewal-bot
+
 Setup a periodic docker task with these ENVIRONMENT variables
 - ZEROSSL_EMAIL: ZeroSSL account email
 - CERT_DOMAIN: fully qualified hostname of the certificate e.g. 'backend-api.yourdomain.com'

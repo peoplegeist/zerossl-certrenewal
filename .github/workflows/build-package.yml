@@ -98,7 +98,7 @@ jobs:
         with:
           context: ./bot/
           push: true
-          tags: peoplegeist/zerossl-certrenewal-bot:${{ steps.vars.outputs.tag }}
+          tags: ["peoplegeist/zerossl-certrenewal-bot:${{ steps.vars.outputs.tag }}","peoplegeist/zerossl-certrenewal-bot:latest"]
       
       - name: run bot
         run: docker run -e ZEROSSL_EMAIL=admin@peoplegeist.com -e CERT_DOMAIN=test-api.peoplegeist.com -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} -e S3_BUCKET_URL=s3://buildtools-peoplegeist.com/test/certs peoplegeist/zerossl-certrenewal-bot:${{ steps.vars.outputs.tag }}
