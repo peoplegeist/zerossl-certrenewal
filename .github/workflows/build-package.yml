@@ -21,10 +21,6 @@ jobs:
       matrix:
         node: [16]
 
-Doku
-https://docs.github.com/en/actions/guides/publishing-nodejs-packages
-
-
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v2
