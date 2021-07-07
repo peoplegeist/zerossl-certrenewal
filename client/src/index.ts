@@ -4,7 +4,7 @@ import { CertConfigOptions } from './interfaces';
 import jsLogger from 'js-logger';
 import { GetObjectCommand, ListObjectsV2Command, S3Client } from '@aws-sdk/client-s3';
 
-const log = jsLogger.get('zerossl-certrenwal-client');
+const log = jsLogger.get('zerossl-certrenewal-client');
 
 export class ZeroSSLCertrenewalClient {
 
