@@ -118,17 +118,13 @@ export class ZeroSSLCertrenewalClient {
       messages.unshift(context.level.name);
     };
     
-    if(process.env.NODE_ENV === 'production' && config.logAll === false) {
-      jsLogger.useDefaults({
-        defaultLevel: jsLogger.INFO,
-        formatter: loggingFormatter
-      });
-    } else {
+    if(process.env.NODE_ENV !== 'production' || config.logAll) {
       jsLogger.useDefaults({
         defaultLevel: jsLogger.TRACE,
         formatter: loggingFormatter
       });
 
+      log.info('zeroSSLCertRnewalClient switched logger to log-level TRACE and applied own loggingFormatter');
     }
 
     this.config = config;
