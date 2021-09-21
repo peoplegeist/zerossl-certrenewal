@@ -69,9 +69,9 @@ Part 2 - Check and install new cert: 'zerossl-certrenewal-client'
 ## Run zerossl-certrenewal-bot
 docker run peoplegeist/zerossl-certrenewal-bot
 
-docker run -e ZEROSSL_EMAIL=admin@peoplegeist.com -e CERT_DOMAIN=campaign-api.peoplegeist.com -e AWS_ACCESS_KEY_ID=AKIA5YNESZM67CTMVVTT -e AWS_SECRET_ACCESS_KEY=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 -e S3_BUCKET_URL=s3://buildtools-peoplegeist.com/test/certs peoplegeist/zerossl-certrenewal-bot
+docker run -e ZEROSSL_EMAIL=admin@peoplegeist.com -e CERT_DOMAIN=campaign-api.peoplegeist.com -e AWS_ACCESS_KEY_ID=xxxx -e AWS_SECRET_ACCESS_KEY=xxxx -e S3_BUCKET_URL=s3://buildtools-peoplegeist.com/test/certs peoplegeist/zerossl-certrenewal-bot
 
-docker run -e ZEROSSL_EMAIL=admin@peoplegeist.com -e CERT_DOMAIN=population-api.peoplegeist.com -e AWS_ACCESS_KEY_ID=AKIA5YNESZM67CTMVVTT -e AWS_SECRET_ACCESS_KEY=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 -e S3_BUCKET_URL=s3://buildtools-peoplegeist.com/test/certs peoplegeist/zerossl-certrenewal-bot
+docker run -e ZEROSSL_EMAIL=admin@peoplegeist.com -e CERT_DOMAIN=population-api.peoplegeist.com -e AWS_ACCESS_KEY_ID=xxxx -e AWS_SECRET_ACCESS_KEY=xxxx -e S3_BUCKET_URL=s3://buildtools-peoplegeist.com/test/certs peoplegeist/zerossl-certrenewal-bot
 
 Setup a periodic docker task with these ENVIRONMENT variables
 - ZEROSSL_EMAIL: ZeroSSL account email
