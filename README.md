@@ -73,6 +73,8 @@ docker run -e ZEROSSL_EMAIL=admin@peoplegeist.com -e CERT_DOMAIN=campaign-api.pe
 
 docker run -e ZEROSSL_EMAIL=admin@peoplegeist.com -e CERT_DOMAIN=population-api.peoplegeist.com -e AWS_ACCESS_KEY_ID=xxxx -e AWS_SECRET_ACCESS_KEY=xxxx -e S3_BUCKET_URL=s3://buildtools-peoplegeist.com/test/certs peoplegeist/zerossl-certrenewal-bot
 
+docker run -e ZEROSSL_EMAIL=admin@peoplegeist.com -e CERT_DOMAIN=feedback-api.peoplegeist.com -e AWS_ACCESS_KEY_ID=xxxx -e AWS_SECRET_ACCESS_KEY=xxxx -e S3_BUCKET_URL=s3://buildtools-peoplegeist.com/test/certs peoplegeist/zerossl-certrenewal-bot
+
 Setup a periodic docker task with these ENVIRONMENT variables
 - ZEROSSL_EMAIL: ZeroSSL account email
 - CERT_DOMAIN: fully qualified hostname of the certificate e.g. 'backend-api.yourdomain.com'
