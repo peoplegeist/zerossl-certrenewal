@@ -1,6 +1,6 @@
 {
   "name": "@peoplegeist/zerossl-certrenewal-client",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Issues, installs and automatically updates SSL/TLS certificates for node https/2 servers.",
   "main": "dist/exports.js",
   "types": "dist/exports.d.ts",
@@ -30,19 +30,18 @@
   },
   "homepage": "https://github.com/peoplegeist/zerossl-certrenewal#readme",
   "devDependencies": {
-    "@types/eslint": "^7.2.13",
+    "@types/eslint": "^8.4.10",
     "@types/jest": "^26.0.23",
     "@types/node": "^16.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.28.1",
-    "@typescript-eslint/parser": "^4.28.1",
-    "eslint": "^7.30.0",
+    "@typescript-eslint/eslint-plugin": "^5.46.0",
+    "@typescript-eslint/parser": "^5.46.0",
+    "eslint": "^8.29.0",
     "jest": "^27.0.6",
     "ts-jest": "^27.0.3",
-    "ts-node": "^10.0.0",
-    "typescript": "^4.3.5"
+    "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.20.0",
+    "@aws-sdk/client-s3": "^3.226.0",
     "dotenv": "^10.0.0",
     "js-logger": "^1.6.1"
   }
