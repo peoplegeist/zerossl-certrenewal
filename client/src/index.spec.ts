@@ -42,6 +42,7 @@ describe('index', () => {
 
   afterAll(() => {
     if(httpsServer) {
+      httpsServer.closeAllConnections();
       httpsServer.close();
     }
 
@@ -106,16 +107,19 @@ describe('index', () => {
 
       http2Server.listen(9443);
 
-      zeroSSLCertClient.manageZeroSSLCert(httpsServer, certConfig).then(() => {
+      zeroSSLCertClient.manageZeroSSLCert(http2Server, certConfig).then(() => {
       
         https.get('https://127.0.0.1:9443/', { rejectUnauthorized: false, ciphers: 'ALL' }, (res) => {
           log.debug('statusCode:', res.statusCode);
           log.debug('headers:', res.headers);
 
           expect(res.statusCode).toBe(200);
+          zeroSSLCertClient.stopRenewal();
+          http2Server.close();
+          res.destroy();
           done();
 
-          zeroSSLCertClient.stopRenewal();
+          
 
         }).on('error', (e) => {
           log.error(e);
