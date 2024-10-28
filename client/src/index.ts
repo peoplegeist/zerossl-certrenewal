@@ -111,19 +111,9 @@ export class ZeroSSLCertrenewalClient {
       // set default value, 7 days
       config.renewalInterval = 604800000;
     }
-
-    const loggingFormatter = function(messages: string[], context: any) {
-      // prefix each log message with a timestamp.
-      messages.unshift('['+context.name+']');
-      messages.unshift(context.level.name);
-    };
     
     if(process.env.NODE_ENV !== 'production' || config.logAll) {
-      jsLogger.useDefaults({
-        defaultLevel: jsLogger.TRACE,
-        formatter: loggingFormatter
-      });
-
+      log.setLevel(jsLogger.TRACE);
       log.info('zeroSSLCertRnewalClient switched logger to log-level TRACE and applied own loggingFormatter');
     }
 
