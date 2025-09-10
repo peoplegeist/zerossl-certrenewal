@@ -1,8 +1,7 @@
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 RUN apt-get update
-RUN apt-get install -y wget python python-pip
-RUN pip install awscli
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 RUN wget  https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh
 RUN chmod a+x acme.sh
 RUN ./acme.sh --install --force

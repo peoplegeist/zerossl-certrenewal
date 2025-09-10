@@ -2,7 +2,8 @@ import https from 'https';
 import http2 from 'http2';
 import { CertConfigOptions } from './interfaces';
 import jsLogger from 'js-logger';
-import { GetObjectCommand, ListObjectsV2Command, S3Client } from '@aws-sdk/client-s3';
+import { DefaultAzureCredential } from '@azure/identity';
+import { BlobClient, BlobServiceClient } from '@azure/storage-blob';
 
 const log = jsLogger.get('zerossl-certrenewal-client');
 
@@ -121,67 +122,56 @@ export class ZeroSSLCertrenewalClient {
   }
 
   private async getCertificate(): Promise<void> {
-    log.debug('start getting certificates for: ' + this.config?.domainName ?? '-no config-');
+    log.debug('start getting certificates for: ' + this.config?.domainName);
 
     if(this.config === null) {
       log.error('configuration for ZeroSSL renewal client not set');
       return;
     }
-    const s3 = new S3Client({ 
-      region: this.config.awsDefaultRegion,
-      credentials: {
-        accessKeyId: this.config.awsAccessKeyId,
-        secretAccessKey: this.config.awsSecretAccessKey
-      }
-    });
 
-    const command = new ListObjectsV2Command({
-      Bucket: this.config.s3BucketName,
-      Prefix: this.config.s3BucketPrefix + '/' + this.config.domainName + '/'
-    });
-    const list = await s3.send(command);
-    log.debug('certificate path content: ', list);
-    if(!list.Contents || list.Contents.length == 0) {
-      log.error('no certificates found');
-      throw new Error('no certificate found at: ' + this.config.s3BucketName + ' for domain ' + this.config.domainName);
-    }
+    // Enter your storage account name
+    const defaultAzureCredential = new DefaultAzureCredential();
+    
+    const blobServiceClient = new BlobServiceClient(
+      `https://${this.config.azureStorageAccountName}.blob.core.windows.net`,
+      defaultAzureCredential
+    );
 
-    const cmdCert = new GetObjectCommand({
-      Bucket: this.config.s3BucketName,
-      Key: this.config.s3BucketPrefix + '/' + this.config.domainName + '/' + this.config.domainName + '.cer'
-    });
+    const containerClient = blobServiceClient.getContainerClient(this.config.azureStorageContainer);
 
-    const cmdKey = new GetObjectCommand({
-      Bucket: this.config.s3BucketName,
-      Key: this.config.s3BucketPrefix + '/' + this.config.domainName + '/' + this.config.domainName + '.key'
-    });
+    const cmdCert = containerClient.getBlobClient(`${this.config.domainName}/${this.config.domainName}.cer`);
+    const cmdKey = containerClient.getBlobClient(`${this.config.domainName}/${this.config.domainName}.key`);
+    const cmdCa = containerClient.getBlobClient(`${this.config.domainName}/ca.cer`);
 
-    const cmdCa = new GetObjectCommand({
-      Bucket: this.config.s3BucketName,
-      Key: this.config.s3BucketPrefix + '/' + this.config.domainName + '/ca.cer'
-    });
 
     log.debug('get certificate: ', cmdCert);
-    const cert = await s3.send(cmdCert);
-    this.certificate = await this.streamToString(cert.Body);
+    this.certificate = await this.streamToString(cmdCert) ?? '';
 
     log.debug('get private key: ', cmdKey);
-    const key = await s3.send(cmdKey);
-    this.privateKey = await this.streamToString(key.Body);
+    this.privateKey = await this.streamToString(cmdKey) ?? '';
 
     log.debug('get ca: ', cmdCa);
-    const ca = await s3.send(cmdCa);
-    this.ca = await this.streamToString(ca.Body);
+    this.ca = await this.streamToString(cmdCa) ?? '';
 
     return;
   }
 
-  private streamToString(stream: any): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const chunks: any[] = [];
-      stream.on('data', (chunk: any) => chunks.push(chunk));
-      stream.on('error', reject);
-      stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-    });
+  private async streamToString(blobClient: BlobClient): Promise<string | undefined> {
+    const downloadBlockBlobResponse = await blobClient.download();
+    if (downloadBlockBlobResponse.readableStreamBody) {
+      const stream = downloadBlockBlobResponse.readableStreamBody;
+      
+      const result = await new Promise<Buffer>((resolve, reject) => {
+        const chunks: Buffer[] = [];
+        stream.on('data', (data: any) => {
+          chunks.push(Buffer.isBuffer(data) ? data : Buffer.from(data));
+        });
+        stream.on('end', () => {
+          resolve(Buffer.concat(chunks));
+        });
+        stream.on('error', reject);
+      });
+      return result.toString();
+    }    
   }
 }

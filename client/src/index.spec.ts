@@ -16,11 +16,11 @@ describe('index', () => {
 
   const certConfig: CertConfigOptions = {
     domainName: '',
-    s3BucketName: '',
-    s3BucketPrefix: '',
-    awsAccessKeyId: '',
-    awsSecretAccessKey: '',
-    awsDefaultRegion: '',
+    azureStorageAccountName: '',
+    azureStorageContainer: '',
+    azureClientId: '',
+    azureClientSecret: '',
+    azureTenantId: '',
     renewalInterval: 1000,
     logAll: true
   };
@@ -33,11 +33,11 @@ describe('index', () => {
       throw new Error('env not configured');
     }
     certConfig.domainName = process.env.CERT_DOMAIN!;
-    certConfig.awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID!;
-    certConfig.awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY!;
-    certConfig.awsDefaultRegion = process.env.AWS_DEFAULT_REGION!;
-    certConfig.s3BucketName = process.env.S3_BUCKET_NAME!;
-    certConfig.s3BucketPrefix = process.env.S3_BUCKET_PREFIX!;
+    certConfig.azureClientId = process.env.AZURE_CLIENT_ID!;
+    certConfig.azureClientSecret = process.env.AZURE_CLIENT_SECRET!;
+    certConfig.azureTenantId = process.env.AZURE_TENANT_ID!;
+    certConfig.azureStorageAccountName = process.env.STORAGE_ACCOUNT_NAME!;
+    certConfig.azureStorageContainer = process.env.STORAGE_COUNTAINER!;
   });
 
   afterAll(() => {

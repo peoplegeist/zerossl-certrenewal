@@ -1,6 +1,6 @@
 {
   "name": "@peoplegeist/zerossl-certrenewal-client",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Issues, installs and automatically updates SSL/TLS certificates for node https/2 servers.",
   "main": "dist/exports.js",
   "types": "dist/exports.d.ts",
@@ -42,7 +42,8 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.226.0",
+    "@azure/identity": "^4.11.1",
+    "@azure/storage-blob": "^12.28.0",
     "dotenv": "^10.0.0",
     "js-logger": "^1.6.1"
   }
